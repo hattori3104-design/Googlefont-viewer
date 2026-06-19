@@ -243,7 +243,7 @@
     background: transparent;
     color: var(--text);
     padding: 2px 4px;
-    min-width: 60px;
+    min-width: 80px;
     width: auto;
     caret-color: var(--accent);
     border-bottom: 1px solid transparent;
@@ -831,7 +831,12 @@ function renderComposer() {
   }).join("") + `
     <button class="composer-add-btn" onclick="addSeg()">＋ テキストを追加</button>`;
   document.getElementById("composer").innerHTML = html;
-  document.querySelectorAll(".composer-segment-text").forEach(autoResize);
+  const inputs = document.querySelectorAll(".composer-segment-text");
+  inputs.forEach(autoResize);
+  // フォント読み込み完了後に再計算（Google Fontが遅延ロードされるため）
+  document.fonts.ready.then(() => {
+    document.querySelectorAll(".composer-segment-text").forEach(autoResize);
+  });
 }
 
 function renderBodyArea() {
