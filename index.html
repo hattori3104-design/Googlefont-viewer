@@ -852,14 +852,22 @@ function renderBodyArea() {
 }
 
 function autoResize(el) {
+  const cs = window.getComputedStyle(el);
   const tmp = document.createElement("span");
-  tmp.style.cssText = window.getComputedStyle(el).cssText;
-  tmp.style.visibility = "hidden";
-  tmp.style.position = "absolute";
-  tmp.style.width = "auto";
+  // getComputedStyle().cssText は空を返すブラウザがあるため、必要なプロパティを個別にコピー
+  tmp.style.fontFamily    = cs.fontFamily;
+  tmp.style.fontSize      = cs.fontSize;
+  tmp.style.fontWeight    = cs.fontWeight;
+  tmp.style.fontStyle     = cs.fontStyle;
+  tmp.style.letterSpacing = cs.letterSpacing;
+  tmp.style.visibility    = "hidden";
+  tmp.style.position      = "absolute";
+  tmp.style.whiteSpace    = "pre";
+  tmp.style.width         = "auto";
   tmp.textContent = el.value || " ";
   document.body.appendChild(tmp);
-  el.style.width = Math.max(40, tmp.offsetWidth + 8) + "px";
+  // padding(左右4px ×2) ＋ 余白を加味
+  el.style.width = Math.max(40, tmp.offsetWidth + 16) + "px";
   document.body.removeChild(tmp);
 }
 
